@@ -82,11 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         //内容改变回调
         onChanged: (account) {
-          print('change $account');
+//          print('change $account');
         },
         //提交触发回调
         onSubmitted: (account) {
-          print('submit $account');
+//          print('submit $account');
         },
         //是否禁用
         enabled: true,
@@ -150,11 +150,11 @@ class _LoginScreenState extends State<LoginScreen> {
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       //内容改变回调
       onChanged: (password) {
-        print('change $password');
+//        print('change $password');
       },
       //提交触发回调
       onSubmitted: (password) {
-        print('submit $password');
+//        print('submit $password');
       },
       //是否禁用
       enabled: true,

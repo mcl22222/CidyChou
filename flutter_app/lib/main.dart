@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/animation/HeroAnimation.dart';
+import 'package:flutter_app/navigatior/MainNavigator.dart';
 import 'package:flutter_app/screen/ArticleListScreen.dart';
-import 'package:flutter_app/screen/MainPage.dart';
 import 'package:flutter_app/screen/FlutterDemo.dart';
 import 'package:flutter_app/screen/LoginScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
          * 凡是后面使用Navigator.of(context).pushNamed('/Home')，都会跳转到Home()，
          */
         '/': (BuildContext context) => new LoginScreen(),
-        '/Home': (BuildContext context) => new MainPage(),
+        '/Home': (BuildContext context) => new MainNavigator(),
         '/articleList': (BuildContext context) => new ArticleListScreen(),
         '/flutter': (BuildContext context) => new FlutterScreen(),
         '/heroAnimation': (BuildContext context) => new HeroAnimation(),

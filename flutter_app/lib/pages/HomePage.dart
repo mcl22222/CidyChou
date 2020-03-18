@@ -2,7 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
-class HomeScreen extends StatelessWidget {
+const APP_BAR_ALPHA = 100;
+
+//首页
+class HomePage extends StatefulWidget {
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   //自定义字体
   final textStyle = const TextStyle(
     fontFamily: 'Chu',
@@ -22,10 +29,25 @@ class HomeScreen extends StatelessWidget {
 
   static List chainList = ['武汉', '加油！', '中国', '加油！', '我们', '必胜！'];
 
+  double appBarAlpha = 0; //透明度
+
+  _onScroll(offset) {
+    double alpha = offset / APP_BAR_ALPHA; //占比例
+    if (alpha < 0) {
+      alpha = 0;
+    } else if (alpha > 1) {
+      alpha = 1;
+    }
+    setState(() {
+      //setState要在StatefulWidget
+      appBarAlpha = alpha;
+    });
+  }
+
   //轮播图控件，写在build的前面，Container创建矩形视觉元素，可对元素进行修饰eg:背景色、边框、边距、填充等
   static Widget swiperSection = new Container(
     //轮播图的高度
-    height: 120,
+    height: 160,
     //轮播图，还有其它的属性，这里不一一介绍了
     child: Swiper(
       //有多少个
@@ -67,14 +89,17 @@ class HomeScreen extends StatelessWidget {
   //GridView控件
   static Widget gridSection = new Container(
     child: GridView.count(
+      shrinkWrap: true,
+      //解决listView嵌套GridView不能滚动问题
+      physics: new NeverScrollableScrollPhysics(),
       //水平之间的间距
       crossAxisSpacing: 10.0,
       //垂直之间的间距
-      mainAxisSpacing: 30.0,
+      mainAxisSpacing: 20.0,
       //GridView内边距，all四个方向
       padding: EdgeInsets.all(10.0),
       //一行显示多少个Widget
-      crossAxisCount: 2,
+      crossAxisCount: 1,
       //Widget宽高比例
       childAspectRatio: 2.0,
       //数据
@@ -99,7 +124,7 @@ class HomeScreen extends StatelessWidget {
         );
       },
       child: new Container(
-        height: 80,
+        height: 20,
         margin: EdgeInsets.only(bottom: 5),
         alignment: Alignment.center,
         decoration: BoxDecoration(color: Colors.red),
@@ -140,23 +165,50 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     context1 = context;
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(
-          '首页',
-          style: textStyle,
+        body: Stack(
+      //堆，包裹的控件，排后面的在前面的上面显示
+      children: <Widget>[
+        //移除顶部
+        MediaQuery.removePadding(
+          removeTop: true,
+          context: context,
+          child: NotificationListener(
+              //通知监听
+              onNotification: (scrollNotification) {
+                //滚动监听
+                //是滑动更新的监听、且只监听第一层（子的不处理）
+                if (scrollNotification is ScrollUpdateNotification &&
+                    scrollNotification.depth == 0) {
+                  //根据滑动的距离更改透明度
+                  _onScroll(scrollNotification.metrics.pixels);
+                }
+              },
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  swiperSection,
+                  gridSection,
+                ],
+              )),
         ),
-      ),
-      body: Center(
-        //垂直方向上进行排列子widget
-        child: Column(
-          children: <Widget>[
-            //Expanded会强制子组件填充可用空间，默认是等分，那么在里面设置大小没有效果，
-            // 可用用Flexible不会强制填充，子组件自己大小是多少就多少（效果自己动手看看）
-            new Expanded(child: swiperSection),
-            new Expanded(flex: 2, child: gridSection),//flex默认是1，等分，设置2那么它占空间的2/3
-          ],
-        ),
-      ),
-    );
+        Opacity(
+          //里面写好的子widget透明度随上下滑动而改变
+          opacity: appBarAlpha, //透明度
+          child: Container(
+            height: 80,
+            decoration: BoxDecoration(color: Colors.white),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(
+                  '首页',
+                  style: textStyle,
+                ),
+              ),
+            ),
+          ),
+        )
+      ],
+    ));
   }
 }
