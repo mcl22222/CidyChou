@@ -4,7 +4,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 
 const APP_BAR_ALPHA = 100;
 
-//首页
+//首页，轮播图swiper、GridView
 class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
       //一行显示多少个Widget
       crossAxisCount: 1,
       //Widget宽高比例
-      childAspectRatio: 2.0,
+      childAspectRatio: 4.0,
       //数据
       children: getGridList(),
     ),

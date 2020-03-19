@@ -306,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
             loginButton,
 //            buttons("想去文章列表", '/articleList'),
 //            buttons("想去Flutterdemo", '/flutter'),
-//            buttons("想去HeroAnimation", '/heroAnimation'),
+            buttons("想去HeroAnimation", '/heroAnimation'),
           ],
         ));
   }

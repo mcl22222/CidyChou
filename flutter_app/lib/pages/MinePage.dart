@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-//我的
+//我的包含顶部导航栏
 class MinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -9,10 +9,29 @@ class MinePage extends StatelessWidget {
         length: choices.length,
         child: Scaffold(
           appBar: AppBar(
-//            title: const Text('我的'),
-            bottom: TabBar(
+//            //用title原先的标题栏没有，用bottom则在原先下面建立一个bar
+            title: TabBar(
+              //选中的颜色
               labelColor: Colors.white,
+              //选中的样式
+              labelStyle: TextStyle(fontSize: 15),
+              //未选中的颜色
+              unselectedLabelColor: Colors.black,
+              //未选中的样式
+              unselectedLabelStyle: TextStyle(fontSize: 12),
+              //是否可以滚动
               isScrollable: true,
+              //指示器颜色
+              indicatorColor: Colors.white,
+              //指示器高度
+//              indicatorWeight: 1,
+              //底部指示器的padding
+              indicatorPadding: EdgeInsets.zero,
+              //指示器大小计算方式，TabBarIndicatorSize.label跟文字等宽,TabBarIndicatorSize.tab跟每个tab等宽
+              indicatorSize: TabBarIndicatorSize.tab,
+              //每个label的padding值
+              labelPadding: EdgeInsets.all(25),
+              //内容
               tabs: choices.map((Choice choice) {
                 return Tab(
                   text: choice.title,
@@ -21,13 +40,17 @@ class MinePage extends StatelessWidget {
               }).toList(),
             ),
           ),
-          body: TabBarView(
+          body:
+
+
+          TabBarView(
             children: choices.map((Choice choice) {
               return Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(30.0),
                 child: ChoiceCard(choice: choice),
               );
             }).toList(),
+
           ),
         ),
       ),
