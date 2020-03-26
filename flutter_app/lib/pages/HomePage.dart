@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     'images/lake.jpg'
   ];
 
-  static List chainList = ['武汉', '加油！', '中国', '加油！', '我们', '必胜！'];
+  static List chainList = ['武汉', '加油！', '中国', '加油！','人类', '加油！', '我们', '必胜！'];
 
   double appBarAlpha = 0; //透明度
 
@@ -191,6 +191,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               )),
         ),
+        //使其子widget透明的widget
         Opacity(
           //里面写好的子widget透明度随上下滑动而改变
           opacity: appBarAlpha, //透明度

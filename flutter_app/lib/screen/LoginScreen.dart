@@ -291,7 +291,10 @@ class _LoginScreenState extends State<LoginScreen> {
     context1 = context;
     return Scaffold(
         appBar: new AppBar(
-          title: new Text('登录'),
+          title: new Text(
+              '登录',
+            style: new TextStyle(fontSize: 20,color: Colors.white),
+          ),
         ),
         body: new ListView(
           children: [
@@ -307,6 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
 //            buttons("想去文章列表", '/articleList'),
 //            buttons("想去Flutterdemo", '/flutter'),
             buttons("想去HeroAnimation", '/heroAnimation'),
+            buttons("想去Flutter", '/flutter'),
           ],
         ));
   }

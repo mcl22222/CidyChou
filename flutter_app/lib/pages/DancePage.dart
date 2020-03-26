@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class _DancePageDtate extends State<DancePage> {
   //显示返回的数据
   String showResult = '';
 
-  //发起请求
+  //另一种请求方法
   Future<BaseBean> getData() async {
     final response = await http.get(
         'http://192.168.0.224:8080/eolinker_os/Mock/simple?projectID=2&uri=http://www.mcl.net:8888/api/Test');
@@ -22,6 +23,37 @@ class _DancePageDtate extends State<DancePage> {
 
     return BaseBean.from(result);
   }
+
+  var _ipAddress = 'Unknown';
+
+  //官网的请求方法
+  Future<BaseBean> _getHttpData() async {
+    var url =
+        'http://192.168.0.224:8080/eolinker_os/Mock/simple?projectID=2&uri=http://www.mcl.net:8888/api/Test';
+    var httpClient = new HttpClient();
+    String result;
+    try {
+      var request = await httpClient.getUrl(Uri.parse(url));
+      var response = await request.close();
+      if (response.statusCode == HttpStatus.ok) {
+        var json = await response.transform(utf8.decoder).join();
+        var data = jsonDecode(json); //此时的data就是服务器返回的一整条json
+        result = data['msg']; //获取里面的msg
+      } else {
+        result =
+            'Error getting IP address:\nHttp status ${response.statusCode}';
+      }
+    } catch (exception) {
+      result = 'Failed getting IP address';
+    }
+    if (!mounted) return null;
+    setState(() {
+      _ipAddress = result;
+    });
+  }
+
+  //监听输入框的文字变化
+  static TextEditingController _spController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +70,7 @@ class _DancePageDtate extends State<DancePage> {
             child: new RaisedButton(
                 color: Colors.red,
                 child: new Text(
-                  '点击时发起网络请求',
+                  '另一种HTTPS的Get请求',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
                 onPressed: () {
@@ -55,10 +87,31 @@ class _DancePageDtate extends State<DancePage> {
           ),
           Container(
             margin: EdgeInsets.only(top: 15),
+            height: 50,
+            child: new RaisedButton(
+              color: Colors.red,
+              child: new Text(
+                '官网HTTPS的Get请求',
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+              onPressed: _getHttpData,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 15),
             alignment: Alignment.center,
             decoration: BoxDecoration(color: Colors.black),
             child: Text(
               showResult,
+              style: TextStyle(color: Colors.white, fontSize: 26),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 15),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(color: Colors.black),
+            child: Text(
+              _ipAddress,
               style: TextStyle(color: Colors.white, fontSize: 26),
             ),
           ),
